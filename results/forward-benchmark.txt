@@ -1,0 +1,30 @@
+Exercise 5 forward-only benchmark
+Run on 2026-07-18 from code/ with the repository Hugging Face cache and
+HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1.
+
+Command:
+python -B benchmark.py --device cuda
+
+Exact terminal output:
+
+hardware=NVIDIA GeForce RTX 4060 Ti
+python=3.13.13  torch=2.11.0+cu126  cuda=12.6  cudnn=91002
+device=cuda  batch=64  warmup=5  timed_iterations=50
+frozen_embedding=38,603,520 FP32 values  storage_MB=154.414
+
+model           trainable   ms/batch  us/sentence
+one-hot            16,272      0.033          0.5
+embedding             769      0.026          0.4
+BiLSTM            696,201      0.689         10.8
+fine-tuned     82,119,169     42.123        658.2
+
+fine_tuned_FP32_parameter_storage_MB=328.477
+us/sentence is amortized batch-64 throughput, not batch-1 latency.
+Timing covers model forward only; preprocessing and data transfer excluded.
+
+Method note:
+The script uses synthetic, already-preprocessed inputs; model.eval();
+torch.no_grad(); five warm-up calls; 50 timed calls; and CUDA synchronization
+immediately before and after timing. The fine-tuned row benchmarks the submitted
+architecture loaded from the cached pretrained backbone plus its linear head;
+no model is trained or evaluated for sentiment by this script.
