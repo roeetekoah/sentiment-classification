@@ -4,6 +4,8 @@ How much does the representation matter, and what changes when the language mode
 
 Joint coursework by **Roee Tekoah and Yona Gan**, with experiments on binary sentiment from the Stanford Sentiment Treebank. The [eight-page study](docs/sentiment-study.pdf) covers representations, training behavior, negation and rare-word subsets, parameter counts, and computational cost.
 
+**Course-project grade: 100/100.**
+
 ## Recorded results
 
 | Model | Test accuracy | Trainable parameters |
